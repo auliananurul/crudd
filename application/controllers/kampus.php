@@ -22,24 +22,36 @@ class Kampus extends CI_Controller{
         $alamat = $this->input->post('alamat');
         $pekerjaan = $this->input->post('pekerjaan');
 
+        $config['max_size']=2048;
+        $config['allowed_types']="png|jpg|jpeg|gif";
+        $config['remove_spaces']=TRUE;
+        $config['overwrite']=TRUE;
+        $config['upload_path']=FCPATH.'images';
+
+        $this->load->library('upload');
+        $this->upload->initialize($config);
+
+        $this->upload->do_upload('foto');
+        $data_image=$this->upload->data('file_name');
+        $location='images/';
+        $foto=$location.$data_image;
+
         $data = array(
             'nim' => $nim,
             'nama' => $nama,
             'alamat' => $alamat,
             'pekerjaan' => $pekerjaaan,
+            'foto' => $foto
         );
         $this->m_data->input_data($data,'mahasiswa');
         redirect('kampus/index');
     }
 }
-    
-
     function edit($id) {
         $where = array('id' => $id);
         $data['mahasiswa'] = $this->m_data->edit_data($where,'mahasiswa')->result();
         $this->load->view('edit_data',$data);
 }
-
     function update() {
         $id = $this->input->post('id');
         $nis = $this->input->post('nim');
@@ -47,11 +59,26 @@ class Kampus extends CI_Controller{
         $alamat = $this->input->post('alamat');
         $pekerjaan = $this->input->post('pekerjaan');
 
+       $config['max_size']=2048;
+       $config['allowed_types']="png|jpg|jpeg|gif";
+       $config['remove_spaces']=TRUE;
+       $config['overwrite']=TRUE;
+       $config['upload_path']=FCPATH.'images';
+
+        $this->load->liabrary('upload');
+        $this->upload->initialize($config);
+
+       $this->upload->do_upload('foto');
+       $data_image=$this->upload->data('file_name');
+       $location='images/';
+       $foto=$location.$data_image;
+
         $data = array(
             'nis' => $nim,
             'nama' => $nama,
             'alamat' => $alamat,
             'pekerjaan' => $pekerjaan
+            'foto' =>$foto
         );
 
         $where = array(
